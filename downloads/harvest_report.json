@@ -1,0 +1,26 @@
+[
+  {
+    "institution": "State Street Global Advisors",
+    "start_url": "https://lnkd.in/eE4fEffX",
+    "final_url": "https://lnkd.in/eE4fEffX",
+    "status": "downloaded",
+    "file_path": "downloads/state_street_2026.pdf",
+    "notes": null,
+    "actions": [
+      "accepted_cookies",
+      "downloaded_via_click:pdf"
+    ]
+  },
+  {
+    "institution": "Barclays Private Bank",
+    "start_url": "https://lnkd.in/eAntfiCY",
+    "final_url": "https://privatebank.barclays.com/insights/outlook-2026-11-2025/",
+    "status": "downloaded",
+    "file_path": "downloads/barclays_private_2026.pdf",
+    "notes": null,
+    "actions": [
+      "accepted_cookies",
+      "downloaded_via_click:download"
+    ]
+  }
+]
