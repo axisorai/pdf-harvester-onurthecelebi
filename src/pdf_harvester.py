@@ -3,9 +3,47 @@ import csv
 import json
 import time
 import pathlib
+import subprocess
+import sys
 from dataclasses import dataclass, asdict
 from typing import List, Optional, Tuple, Dict
 from urllib.parse import urlparse
+
+
+def ensure_playwright_browsers():
+    """Install Playwright browsers on first run if not present."""
+    try:
+        from playwright.sync_api import sync_playwright
+        with sync_playwright() as p:
+            # Try to launch - if it fails, browsers aren't installed
+            try:
+                browser = p.chromium.launch(headless=True)
+                browser.close()
+                return True
+            except Exception:
+                pass
+    except Exception:
+        pass
+    
+    print()
+    print("=" * 60)
+    print("   FIRST RUN SETUP")
+    print("   Installing browser components...")
+    print("   This only happens once. Please wait...")
+    print("=" * 60)
+    print()
+    
+    try:
+        subprocess.run([sys.executable, "-m", "playwright", "install", "chromium"], check=True)
+        print()
+        print("   Browser components installed successfully!")
+        print()
+        return True
+    except Exception as e:
+        print(f"   Failed to install browsers: {e}")
+        print("   Please run: playwright install chromium")
+        return False
+
 
 from playwright.sync_api import sync_playwright, Page, BrowserContext, Download
 
@@ -431,6 +469,12 @@ def main():
     print("=" * 60)
     print()
     
+    # Ensure browsers are installed
+    if not ensure_playwright_browsers():
+        print("Cannot continue without browser components.")
+        input("Press Enter to exit...")
+        return
+    
     with sync_playwright() as p:
         browser = p.chromium.launch(headless=HEADLESS)
         context = browser.new_context(
@@ -452,6 +496,8 @@ def main():
         browser.close()
         write_reports(results)
         print(f"\nDone. Reports saved to {DOWNLOAD_DIR}")
+        print()
+        input("Press Enter to exit...")
 
 if __name__ == "__main__":
     main()
